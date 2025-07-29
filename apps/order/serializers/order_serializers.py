@@ -60,6 +60,7 @@ class OrderCreateSerializer(serializers.Serializer):
     contact_phone = serializers.CharField(required=False, allow_blank=True, max_length=20, error_messages=ErrMessage.char(_("联系电话")))
     contact_name = serializers.CharField(required=False, allow_blank=True, max_length=100, error_messages=ErrMessage.char(_("联系人")))
     notes = serializers.CharField(required=False, allow_blank=True, error_messages=ErrMessage.char(_("订单备注")))
+    payment_method = serializers.ChoiceField(required=False, choices=PaymentMethodChoices.choices, allow_null=True, error_messages=ErrMessage.char(_("支付方式")))
     items = OrderItemCreateSerializer(many=True, required=True, error_messages=ErrMessage.list(_("订单项")))
 
     def validate_items(self, value):
@@ -71,9 +72,10 @@ class OrderCreateSerializer(serializers.Serializer):
     def create(self, validated_data):
         items_data = validated_data.pop('items')
         user_id = validated_data.pop('user_id')
+        payment_method = validated_data.pop('payment_method', None)
         
         # 创建订单
-        order = Order.objects.create(user_id=user_id, **validated_data)
+        order = Order.objects.create(user_id=user_id, payment_method=payment_method, **validated_data)
         
         # 创建订单项
         for item_data in items_data:

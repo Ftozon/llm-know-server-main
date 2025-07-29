@@ -43,7 +43,8 @@ const prologue = computed(() => {
       /<html_rander>[\d\D]*?<\/html_rander>/g,
       /<echarts_rander>[\d\D]*?<\/echarts_rander>/g,
       /<quick_question>[\d\D]*?<\/quick_question>/g,
-      /<form_rander>[\d\D]*?<\/form_rander>/g
+      /<form_rander>[\d\D]*?<\/form_rander>/g,
+      /<payment_rander>[\d\D]*?<\/payment_rander>/g
     ]
     let _temp = temp
     for (const index in tag_list) {

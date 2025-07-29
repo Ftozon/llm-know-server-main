@@ -28,6 +28,15 @@
         v-else-if="item.type === 'form_rander'"
         :form_setting="item.content"
       ></FormRander>
+      <PaymentRander
+        v-else-if="item.type === 'payment_rander'"
+        :order-data="item.content"
+        :disabled="disabled"
+        :send-message="sendMessage"
+        :child_node="child_node"
+        :runtime_node_id="runtime_node_id"
+        :chat_record_id="chat_record_id"
+      ></PaymentRander>
       <MdPreview
         v-else
         ref="editorRef"
@@ -45,6 +54,7 @@ import { config } from 'md-editor-v3'
 import HtmlRander from './HtmlRander.vue'
 import EchartsRander from './EchartsRander.vue'
 import FormRander from './FormRander.vue'
+import PaymentRander from './PaymentRander.vue'
 import ReasoningRander from './ReasoningRander.vue'
 config({
   markdownItConfig(md) {
@@ -85,8 +95,10 @@ const props = withDefaults(
 const editorRef = ref()
 const md_view_list = computed(() => {
   const temp_source = props.source
-  return split_form_rander(
-    split_echarts_rander(split_html_rander(split_quick_question([temp_source])))
+  return split_payment_rander(
+    split_form_rander(
+      split_echarts_rander(split_html_rander(split_quick_question([temp_source])))
+    )
   )
 })
 
@@ -222,6 +234,39 @@ const split_form_rander_ = (source: string, type: string) => {
         content: md_quick_question_list[Math.floor(index / 2)]
           .replace('<form_rander>', '')
           .replace('</form_rander>', '')
+      }
+    }
+  })
+  return result
+}
+
+const split_payment_rander = (result: Array<any>) => {
+  return result
+    .map((item) => split_payment_rander_(item.content, item.type))
+    .reduce((x: any, y: any) => {
+      return [...x, ...y]
+    }, [])
+}
+
+const split_payment_rander_ = (source: string, type: string) => {
+  const temp_list = source.match(/<payment_rander>[\d\D]*?<\/payment_rander>/g)
+  const list = temp_list ? temp_list.filter((i) => i) : []
+  const split_value = source
+    .split(/<payment_rander>[\d\D]*?<\/payment_rander>/g)
+    .filter((item) => item !== undefined)
+    .filter((item) => !list?.includes(item))
+  const result = Array.from(
+    { length: list.length + split_value.length },
+    (v, i) => i
+  ).map((index) => {
+    if (index % 2 == 0) {
+      return { type: type, content: split_value[Math.floor(index / 2)] }
+    } else {
+      return {
+        type: 'payment_rander',
+        content: list[Math.floor(index / 2)]
+          .replace('<payment_rander>', '')
+          .replace('</payment_rander>', '')
       }
     }
   })

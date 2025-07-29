@@ -71,6 +71,7 @@ class OrderApi:
                     'contact_phone': openapi.Schema(type=openapi.TYPE_STRING, title=_("联系电话")),
                     'contact_name': openapi.Schema(type=openapi.TYPE_STRING, title=_("联系人")),
                     'notes': openapi.Schema(type=openapi.TYPE_STRING, title=_("订单备注")),
+                    'payment_method': openapi.Schema(type=openapi.TYPE_STRING, title=_('支付方式')),
                     'items': openapi.Schema(
                         type=openapi.TYPE_ARRAY,
                         items=openapi.Schema(

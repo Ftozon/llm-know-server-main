@@ -42,7 +42,10 @@ def write_context(step_variable: Dict, global_variable: Dict, node, workflow):
 
 
 def is_interrupt(node, step_variable: Dict, global_variable: Dict):
-    return node.type == 'form-node' and not node.context.get('is_submit', False)
+    return (
+        (node.type == 'form-node' and not node.context.get('is_submit', False)) or
+        (node.type == 'payment-node' and not node.context.get('is_submit', False))
+    )
 
 
 class WorkFlowPostHandler:

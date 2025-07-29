@@ -220,6 +220,13 @@ export default {
       text: '更新全局变量的值',
       assign: '赋值'
     },
+    paymentNode: {
+      label: '支付',
+      text: '在流程中添加付款环节，确认后生成订单',
+      confirm: '确认支付',
+      alipay: '支付宝',
+      paypal: 'PayPal'
+    },
     imageGenerateNode: {
       label: '图片生成',
       text: '根据提供的文本内容生成图片',

@@ -64,7 +64,7 @@ def write_context_stream(node_variable: Dict, workflow_variable: Dict, node: INo
         real_node_id = response_content.get('real_node_id')
         node_is_end = response_content.get('node_is_end', False)
         _reasoning_content = response_content.get('reasoning_content', '')
-        if node_type == 'form-node':
+        if node_type in ['form-node', 'payment-node']:
             is_interrupt_exec = True
         answer += content
         reasoning_content += _reasoning_content
@@ -127,14 +127,20 @@ def reset_application_node_dict(application_node_dict, runtime_node_id, node_dat
             if application_node.get('runtime_node_id') == runtime_node_id:
                 content: str = application_node.get('content')
                 match = re.search('<form_rander>.*?</form_rander>', content)
+                tag = 'form_rander'
+                if not match:
+                    match = re.search('<payment_rander>.*?</payment_rander>', content)
+                    tag = 'payment_rander'
                 if match:
-                    form_setting_str = match.group().replace('<form_rander>', '').replace('</form_rander>', '')
+                    form_setting_str = match.group().replace(f'<{tag}>', '').replace(f'</{tag}>', '')
                     form_setting = json.loads(form_setting_str)
                     form_setting['is_submit'] = True
-                    form_setting['form_data'] = node_data
-                    value = f'<form_rander>{json.dumps(form_setting)}</form_rander>'
-                    res = re.sub('<form_rander>.*?</form_rander>',
-                                 '${value}', content)
+                    if tag == 'form_rander':
+                        form_setting['form_data'] = node_data
+                    else:
+                        form_setting['order_data'] = node_data
+                    value = f'<{tag}>{json.dumps(form_setting)}</{tag}>'
+                    res = re.sub(f'<{tag}>.*?</{tag}>', '${value}', content)
                     application_node['content'] = res.replace('${value}', value)
     except Exception as e:
         pass
