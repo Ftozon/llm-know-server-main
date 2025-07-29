@@ -220,6 +220,16 @@ ${t('views.applicationWorkflow.nodes.formNode.form_content_format2')}`
     }
   }
 }
+export const paymentNode = {
+  type: WorkflowType.PaymentNode,
+  text: t('views.applicationWorkflow.nodes.paymentNode.text'),
+  label: t('views.applicationWorkflow.nodes.paymentNode.label'),
+  height: 200,
+  properties: {
+    stepName: t('views.applicationWorkflow.nodes.paymentNode.label'),
+    config: {}
+  }
+}
 export const documentExtractNode = {
   type: WorkflowType.DocumentExtractNode,
   text: t('views.applicationWorkflow.nodes.documentExtractNode.text'),
@@ -331,6 +341,7 @@ export const menuNodes = [
   conditionNode,
   replyNode,
   formNode,
+  paymentNode,
   questionNode,
   documentExtractNode,
   speechToTextNode,
@@ -423,6 +434,7 @@ export const nodeDict: any = {
   [WorkflowType.FunctionLibCustom]: functionNode,
   [WorkflowType.RrerankerNode]: rerankerNode,
   [WorkflowType.FormNode]: formNode,
+  [WorkflowType.PaymentNode]: paymentNode,
   [WorkflowType.Application]: applicationNode,
   [WorkflowType.DocumentExtractNode]: documentExtractNode,
   [WorkflowType.ImageUnderstandNode]: imageUnderstandNode,

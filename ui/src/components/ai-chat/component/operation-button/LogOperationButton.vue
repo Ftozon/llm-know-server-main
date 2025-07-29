@@ -137,6 +137,7 @@ function markdownToPlainText(md: string) {
 function removeFormRander(text: string) {
   return text
     .replace(/<form_rander>[\s\S]*?<\/form_rander>/g, '')
+    .replace(/<payment_rander>[\s\S]*?<\/payment_rander>/g, '')
     .trim()
 }
 

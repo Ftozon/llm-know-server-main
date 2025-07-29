@@ -14,6 +14,7 @@ export enum WorkflowType {
   ImageUnderstandNode = 'image-understand-node',
   VariableAssignNode = 'variable-assign-node',
   FormNode = 'form-node',
+  PaymentNode = 'payment-node',
   TextToSpeechNode = 'text-to-speech-node',
   SpeechToTextNode = 'speech-to-text-node',
   ImageGenerateNode = 'image-generate-node'

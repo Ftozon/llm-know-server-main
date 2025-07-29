@@ -651,8 +651,8 @@ class WorkflowManage:
         if not node.node_chunk.is_end():
             return False
         if node.id == up_node_id:
-            if node.type == 'form-node':
-                if node.context.get('form_data', None) is not None:
+            if node.type in ['form-node', 'payment-node']:
+                if node.context.get('is_submit', False):
                     return True
                 return False
             return True

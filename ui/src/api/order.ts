@@ -16,4 +16,13 @@ export function getMyOrderList(params: any) {
     method: 'get',
     params
   })
-} 
+}
+
+// 创建订单
+export function createOrder(data: any) {
+  return request({
+    url: '/order/',
+    method: 'post',
+    data
+  })
+}
